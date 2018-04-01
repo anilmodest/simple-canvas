@@ -3,7 +3,7 @@ package Canvas;
 import Canvas.Commands.HelpCommand;
 import Canvas.Commands.ICommand;
 import Canvas.Commands.QuitCommand;
-import Canvas.Exceptions.UndoException;
+import Canvas.Exceptions.ExceptionMessages;
 import Canvas.Renderer.Renderer;
 import Canvas.Renderer.SystemConsole;
 
@@ -14,26 +14,20 @@ public class Application {
 
     public static void main(String[] args){
         System.out.println("Started Simple Canvas!");
+        helpText();
         runUserIO();
     }
 
     private static void runUserIO(){
-        System.out.print(String.format("%c[%d;%df", '*', 10, 10));
-        System.out.print(String.format("%c[%d;%d]f", '*', 11, 10));
-        System.out.print(String.format("%c[%d;%d]", '*', 12, 10));
         CommandParser cmdParser = new CommandParser();
         CommandManager cmdManager = new CommandManager(new Renderer(new SystemConsole()));
         try(Scanner scanner = new Scanner(System.in)) {
             while (true) {
-                System.out.printf("Enter canvas command: ");
-
+                System.out.printf("Please enter command: ");
                 String cmdText = scanner.nextLine().trim();
-
-                System.out.println(String.format("Input command %s", cmdText));
                 Optional<ICommand> optionalCommand = cmdParser.parseCommand(cmdText);
                 if (optionalCommand.isPresent()) {
                     ICommand cmd = optionalCommand.get();
-                    System.out.println(String.format("Is valid Command : %s", cmd.getClass().getName()));
 
                     if (cmd instanceof QuitCommand) {
                         System.exit(0);
@@ -48,11 +42,14 @@ public class Application {
                         }
                     }
                 }
+                else {
+                    System.out.println(ExceptionMessages.INVALID_COMMAND);
+                }
 
             }
 
 
-            }
+        }
 
     }
 

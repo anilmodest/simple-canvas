@@ -2,8 +2,6 @@ package Canvas;
 
 import Canvas.Commands.CanvasCommand;
 import Canvas.Commands.ICommand;
-import Canvas.Commands.UndoCommand;
-import Canvas.Exceptions.UndoException;
 import Canvas.Renderer.IConsole;
 import Canvas.Renderer.Renderer;
 import Canvas.Renderer.SystemConsole;
@@ -11,14 +9,12 @@ import Canvas.Shapes.IShape;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-
 import static org.mockito.Mockito.*;
 
 
 public class CommandManagerTest {
     @Test
-    public void execute_command() throws Exception, UndoException {
+    public void execute_command() throws Exception {
        CanvasCommand mockCommand = mock(CanvasCommand.class);
        IShape mockShape = mock(IShape.class);
        IConsole mockConsole = mock(IConsole.class);
@@ -31,7 +27,7 @@ public class CommandManagerTest {
     }
 
     @Test(expected = Exception.class)
-    public void should_throw_exception_shape_drawn_before_canvas() throws Exception, UndoException {
+    public void should_throw_exception_shape_drawn_before_canvas() throws Exception {
 
         ICommand mockCommand = mock(ICommand.class);
         IShape mockShape = mock(IShape.class);

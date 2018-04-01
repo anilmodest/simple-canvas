@@ -1,7 +1,6 @@
 package Canvas;
 
 import Canvas.Commands.*;
-import Canvas.Shapes.BucketFill;
 
 import java.util.ArrayList;
 import java.util.List;

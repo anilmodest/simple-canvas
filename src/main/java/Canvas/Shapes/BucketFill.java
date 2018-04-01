@@ -3,6 +3,7 @@ package Canvas.Shapes;
 
 import Canvas.DrawingPoint;
 import Canvas.DrawingBoard;
+import Canvas.Exceptions.ExceptionMessages;
 
 import java.awt.*;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Stack;
 public class BucketFill implements IShape {
     private int x;
     private int y;
+    private final static char FILL_CHAR = '@';
 
     public BucketFill(int x, int y) {
 
@@ -24,7 +26,7 @@ public class BucketFill implements IShape {
     public void Draw(DrawingBoard drawingBoard) throws Exception {
 
         if(!ShapeUtility.isWithInBounds(this.x, this.y, drawingBoard.getLength(), drawingBoard.getHeight())){
-            throw new Exception("Point is out of bounds");
+            throw new Exception(ExceptionMessages.OUT_OF_BOUND);
         }
         Optional<DrawingPoint> existingPoint = drawingBoard.getDrawingPoint(this.x, this.y);
         if(existingPoint != null && existingPoint.isPresent()) {
@@ -40,7 +42,7 @@ public class BucketFill implements IShape {
                         if(!points.contains(bp)){
                             points.push(bp);
                         }
-                        drawingBoard.setPoint(new DrawingPoint(bp.X, bp.Y, '@'));
+                        drawingBoard.setPoint(new DrawingPoint(bp.X, bp.Y, FILL_CHAR));
             });
         }
     }

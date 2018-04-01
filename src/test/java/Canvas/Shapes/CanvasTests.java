@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 public class CanvasTests {
 
     @Test
-    public void draw_canvas(){
+    public void draw_canvas() throws Exception {
         Canvas canvas = new Canvas(4, 4);
         List<DrawingPoint> expected = IntStream.range(0, 6).mapToObj(x -> new DrawingPoint(x, 0, '-')).collect(Collectors.toList());
         expected.addAll(IntStream.range(1, 5).mapToObj(y -> new DrawingPoint(5, y, '|')).collect(Collectors.toList()));

@@ -2,12 +2,8 @@ package Canvas;
 
 import Canvas.Commands.CanvasCommand;
 import Canvas.Commands.ICommand;
-import Canvas.Commands.RedoCommand;
-import Canvas.Commands.UndoCommand;
-import Canvas.Exceptions.UndoException;
+import Canvas.Exceptions.ExceptionMessages;
 import Canvas.Renderer.IRenderer;
-
-import java.util.*;
 
 public class CommandManager {
     private DrawingBoard drawingBoard;
@@ -31,7 +27,7 @@ public class CommandManager {
 
 
         if (this.drawingBoard == null) {
-            throw new Exception("First draw canvas");
+            throw new Exception(ExceptionMessages.CANVAS_NOT_DRAWN);
         }
 
         command.getShape().Draw(this.drawingBoard);
