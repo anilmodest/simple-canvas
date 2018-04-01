@@ -1,10 +1,7 @@
 package Canvas.Shapes;
 
-import Canvas.DrawingArea;
 import Canvas.DrawingPoint;
-import Canvas.Exceptions.InvalidLineException;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import jdk.nashorn.internal.runtime.ECMAException;
+import Canvas.DrawingBoard;
 
 import java.util.List;
 
@@ -23,16 +20,19 @@ public class Line implements IShape {
     }
 
     @Override
-    public List<DrawingPoint> Draw(DrawingArea drawingArea) throws Exception {
+    public void Draw(DrawingBoard drawingBoard) throws Exception {
 
-        if(this.isOutOfBound(drawingArea.getLength(), drawingArea.getHeight())){
+        int length = drawingBoard.getLength();
+        int height = drawingBoard.getHeight();
+
+        if(!ShapeUtility.isWithInBounds(this.x1, this.y1, length, height) || !ShapeUtility.isWithInBounds(this.x2, this.y2, length, height)){
             throw new Exception("Line is out of bounds");
         }
         if(this.isHorizontalLine()) {
-            return ShapeUtility.getHorizatalLinePoints(this.x1, this.x2, this.y1, '-');
+            ShapeUtility.getHorizatalLinePoints(Integer.min(this.x1, this.x2), Integer.max(this.x1, this.x2) + 1, this.y1, '-').forEach(dp -> drawingBoard.setPoint(dp));
         }
         else if(this.isVerticalLine()) {
-            return ShapeUtility.getVerticalLinePoints(this.y1, this.y2, this.x1, '-');
+            ShapeUtility.getVerticalLinePoints(Integer.min(this.y1, this.y2), Integer.max(this.y1, this.y2) + 1, this.x1, '-').forEach(dp -> drawingBoard.setPoint(dp));
         }
         else{
             throw new Exception("Only Horizontal and Vertical Lines are supported");
@@ -40,16 +40,6 @@ public class Line implements IShape {
 
     }
 
-    private Boolean isOutOfBound(int length, int height){
-        Boolean isValid = false;
-        if(Integer.min(this.x1, this.x2) <= 0 || Integer.max(this.x1, this.x2) > length + 1) {
-            isValid = true;
-        }
-        if(Integer.min(this.y1, this.y2) <= 0 || Integer.max(this.y1, this.y2) > height + 1) {
-            isValid = true;
-        }
-        return isValid;
-    }
 
     private Boolean isHorizontalLine(){
         return this.y1 == this.y2;

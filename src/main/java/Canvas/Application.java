@@ -65,6 +65,7 @@ public class Application {
         System.out.println("Draw Canvas: C|c l h");
         System.out.println("Draw Canvas: L|l x1 y1 x2 y2");
         System.out.println("Draw Canvas: R|r x1 y1 x2 y2");
+        System.out.println("Draw Canvas: B|b x y");
         System.out.println("Quit: Q|q");
         System.out.println("Help : H|h");
     }

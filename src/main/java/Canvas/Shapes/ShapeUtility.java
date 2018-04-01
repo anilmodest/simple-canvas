@@ -14,4 +14,15 @@ public class ShapeUtility {
     public static List<DrawingPoint> getVerticalLinePoints(int y1, int y2, int x, char drawingChar) {
         return IntStream.range(y1, y2).mapToObj(y -> new DrawingPoint(x, y, drawingChar)).collect(Collectors.toList());
     }
+
+    public static Boolean isWithInBounds(int x, int y, int length, int height){
+        Boolean isValid = true;
+        if(x <= 0 || x > length) {
+            isValid = false;
+        }
+        if(y <= 0 || y > height) {
+            isValid = false;
+        }
+        return isValid;
+    }
 }

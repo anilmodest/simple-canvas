@@ -7,26 +7,24 @@ import Canvas.Commands.UndoCommand;
 import Canvas.Exceptions.UndoException;
 import Canvas.Renderer.IRenderer;
 
-import java.util.List;
-import java.util.Stack;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class CommandManager {
     private ICommand command;
-    private DrawingArea drawingArea;
+    private DrawingBoard drawingBoard;
     private IRenderer renderer;
-    private Stack<ICommand> commandToExecute;
+    private Queue<ICommand> commandToExecute;
     private Stack<ICommand> undoCommands;
 
     public CommandManager(IRenderer renderer){
 
         this.renderer = renderer;
-        this.commandToExecute = new Stack<>();
+        this.commandToExecute = new LinkedList<>();
         this.undoCommands = new Stack<>();
     }
 
     public void execute() throws Exception, UndoException {
-
+        List<DrawingPoint> shapePoints = new ArrayList<>();
         CanvasCommand canvasCommand = this.command instanceof CanvasCommand ? (CanvasCommand) this.command: null;
         UndoCommand undoCommand = this.command instanceof UndoCommand ? (UndoCommand) this.command: null;
         RedoCommand redoCommand = this.command instanceof RedoCommand ? (RedoCommand) this.command: null;
@@ -37,48 +35,36 @@ public class CommandManager {
 
 
         if(canvasCommand != null) {
-            this.drawingArea = new DrawingArea(canvasCommand.getLength(), canvasCommand.getHeight());
-            this.commandToExecute = new Stack<>();
+            this.drawingBoard = new DrawingBoard(canvasCommand.getLength(), canvasCommand.getHeight());
+            this.commandToExecute = new LinkedList<>();
+            this.undoCommands = new Stack<>();
         }
 
         if(undoCommand != null) {
-            if(this.commandToExecute.empty()) {
+            if(this.commandToExecute.isEmpty()) {
                 throw new UndoException("nothing to undo");
             }
-            this.undoCommands.push(this.commandToExecute.pop());
+            this.undoCommands.push(this.commandToExecute.element());
         }
         else if(redoCommand != null) {
-            if(!this.commandToExecute.empty()) {
-                this.commandToExecute.push(this.undoCommands.pop());
+            if(!this.commandToExecute.isEmpty()) {
+                this.commandToExecute.add(this.undoCommands.pop());
             }
         }
         else {
-            if (this.drawingArea == null) {
-                throw new Exception("First draw canvas");
-            }
-
-            try {
-                List<DrawingPoint> dps = this.commandToExecute.stream().flatMap(x -> getShapeCoordinates(x).stream()).collect(Collectors.toList());
-                dps.addAll(this.command.getShape().Draw(this.drawingArea));
-                this.renderer.render(this.drawingArea, dps);
-                commandToExecute.push(this.command);
-            }
-            catch (RuntimeException e) {
-                throw e;
-            }
-
-
+            commandToExecute.add(this.command);
         }
+
+        if (this.drawingBoard == null) {
+            throw new Exception("First draw canvas");
+        }
+
+            command.getShape().Draw(this.drawingBoard);
+            this.renderer.render(this.drawingBoard.toString());
+
     }
 
-    private List<DrawingPoint> getShapeCoordinates(ICommand cmd) {
-        try{
-            return cmd.getShape().Draw(this.drawingArea);
-        }
-        catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
+
 
     public void setCommand(ICommand command) {
         this.command = command;

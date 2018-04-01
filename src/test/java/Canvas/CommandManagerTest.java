@@ -4,6 +4,7 @@ import Canvas.Commands.CanvasCommand;
 import Canvas.Commands.ICommand;
 import Canvas.Commands.UndoCommand;
 import Canvas.Exceptions.UndoException;
+import Canvas.Renderer.IConsole;
 import Canvas.Renderer.Renderer;
 import Canvas.Renderer.SystemConsole;
 import Canvas.Shapes.IShape;
@@ -23,13 +24,15 @@ public class CommandManagerTest {
     @Test
     public void execute_command() throws Exception, UndoException {
 
+       String cmdText = "C 2 2";
        CanvasCommand mockCommand = mock(CanvasCommand.class);
        IShape mockShape = mock(IShape.class);
-       CommandManager cmdMgr = new CommandManager(new Renderer(new SystemConsole()));
+       IConsole mockConsole = mock(IConsole.class);
+       CommandManager cmdMgr = new CommandManager(new Renderer(mockConsole));
        when(mockCommand.getShape()).thenReturn(mockShape);
        //when(mockCommand instanceof CanvasCommand).thenReturn(true);
        when(mockCommand.getLength()).thenReturn(2);
-        when(mockCommand.getHeight()).thenReturn(2);
+       when(mockCommand.getHeight()).thenReturn(2);
        cmdMgr.setCommand(mockCommand);
        cmdMgr.execute();
        verify(mockShape, times(1)).Draw(Mockito.any());
@@ -53,7 +56,7 @@ public class CommandManagerTest {
     public void nothing_to_undo() throws Exception, UndoException {
         UndoCommand undoCommand = mock(UndoCommand.class);
         IShape mockShape = mock(IShape.class);
-        when(mockShape.Draw(Mockito.any())).thenReturn(new ArrayList<>());
+        //when(mockShape).Draw(Mockito.any()));
         CommandManager cmdMgr = new CommandManager(new Renderer(new SystemConsole()));
         cmdMgr.setCommand(undoCommand);
         cmdMgr.execute();

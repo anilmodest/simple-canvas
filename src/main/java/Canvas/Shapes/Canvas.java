@@ -1,7 +1,7 @@
 package Canvas.Shapes;
 
-import Canvas.DrawingArea;
 import Canvas.DrawingPoint;
+import Canvas.DrawingBoard;
 
 import java.util.List;
 
@@ -19,12 +19,10 @@ public class Canvas implements IShape {
 
 
     @Override
-    public List<DrawingPoint> Draw(DrawingArea drawingArea) {
-
-        List<DrawingPoint> dps = ShapeUtility.getHorizatalLinePoints(0, this.length, 0, '-');
-        dps.addAll(ShapeUtility.getVerticalLinePoints(1, this.height - 1, 0, '|'));
-        dps.addAll(ShapeUtility.getVerticalLinePoints(1, this.height - 1, this.length - 1, '|'));
-        dps.addAll(ShapeUtility.getHorizatalLinePoints(0, this.length, this.height - 1, '-'));
-        return dps;
+    public void Draw(DrawingBoard drawingBoard) {
+        ShapeUtility.getHorizatalLinePoints(0, this.length, 0, '-').forEach(dp -> drawingBoard.setPoint(dp));
+        ShapeUtility.getVerticalLinePoints(1, this.height - 1, 0, '|').forEach(dp -> drawingBoard.setPoint(dp));
+        ShapeUtility.getVerticalLinePoints(1, this.height - 1, this.length - 1, '|').forEach(dp -> drawingBoard.setPoint(dp));
+        ShapeUtility.getHorizatalLinePoints(0, this.length, this.height - 1, '-').forEach(dp -> drawingBoard.setPoint(dp));
     }
 }

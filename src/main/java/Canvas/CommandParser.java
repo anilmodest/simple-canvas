@@ -1,8 +1,6 @@
 package Canvas;
 
-import Canvas.Commands.CanvasCommand;
-import Canvas.Commands.ICommand;
-import Canvas.Commands.LineCommand;
+import Canvas.Commands.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +11,17 @@ public class CommandParser {
     private List<ICommand> supportedCommands;
 
     public CommandParser(){
+
+    }
+    public Optional<ICommand> parseCommand(String cmdText) {
         this.supportedCommands = new ArrayList<>();
         this.supportedCommands.add(new CanvasCommand());
         this.supportedCommands.add(new LineCommand());
-    }
-    public Optional<ICommand> parseCommand(String cmdText) {
+        this.supportedCommands.add(new RectangleCommand());
+        this.supportedCommands.add(new QuitCommand());
+        this.supportedCommands.add(new RedoCommand());
+        this.supportedCommands.add(new UndoCommand());
+
         return this.supportedCommands.stream().filter(cmd -> cmd.isValid(cmdText)).findFirst();
     }
 }
