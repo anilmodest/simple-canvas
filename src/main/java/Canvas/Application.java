@@ -27,7 +27,7 @@ public class Application {
             while (true) {
                 System.out.printf("Enter canvas command: ");
 
-                String cmdText = scanner.nextLine();
+                String cmdText = scanner.nextLine().trim();
 
                 System.out.println(String.format("Input command %s", cmdText));
                 Optional<ICommand> optionalCommand = cmdParser.parseCommand(cmdText);
@@ -39,16 +39,16 @@ public class Application {
                         System.exit(0);
                     } else if (cmd instanceof HelpCommand) {
                         helpText();
-                    }
+                    } else {
 
-                    try {
-                        cmdManager.setCommand(cmd);
-                        cmdManager.execute();
-                    }
-                    catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    } catch (UndoException e) {
-                        System.out.println(e.getMessage());
+                        try {
+                            cmdManager.setCommand(cmd);
+                            cmdManager.execute();
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        } catch (UndoException e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
                 }
 

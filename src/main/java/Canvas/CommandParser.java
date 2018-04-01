@@ -1,6 +1,7 @@
 package Canvas;
 
 import Canvas.Commands.*;
+import Canvas.Shapes.BucketFill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,9 @@ public class CommandParser {
         this.supportedCommands.add(new CanvasCommand());
         this.supportedCommands.add(new LineCommand());
         this.supportedCommands.add(new RectangleCommand());
+        this.supportedCommands.add(new BucketFillCommand());
         this.supportedCommands.add(new QuitCommand());
+        this.supportedCommands.add(new HelpCommand());
         this.supportedCommands.add(new RedoCommand());
         this.supportedCommands.add(new UndoCommand());
 

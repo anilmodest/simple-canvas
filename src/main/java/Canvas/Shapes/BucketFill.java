@@ -6,6 +6,7 @@ import Canvas.DrawingBoard;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.Stack;
 
 public class BucketFill implements IShape {
@@ -21,23 +22,35 @@ public class BucketFill implements IShape {
 
     @Override
     public void Draw(DrawingBoard drawingBoard) throws Exception {
-        Stack<Point> points = new Stack<>();
-        points.push(new Point(this.x, this.y));
+
+        if(!ShapeUtility.isWithInBounds(this.x, this.y, drawingBoard.getLength(), drawingBoard.getHeight())){
+            throw new Exception("Point is out of bounds");
+        }
+        Optional<DrawingPoint> existingPoint = drawingBoard.getDrawingPoint(this.x, this.y);
+        if(existingPoint != null && existingPoint.isPresent()) {
+            return;
+        }
+
+        Stack<DrawingPoint> points = new Stack<>();
+        points.push(new DrawingPoint(this.x, this.y));
         while(!points.empty()) {
-            Point point = points.pop();
-            getNeighbours(point).stream().filter(p -> ShapeUtility.isWithInBounds(p.x, p.y, drawingBoard.getLength(), drawingBoard.getHeight())).
-                    filter(p -> !drawingBoard.getDrawingPoint(p.x, p.y).isPresent()).forEach(bp -> {
-                        drawingBoard.setPoint(new DrawingPoint(bp.x, bp.y, '@'));
+            DrawingPoint currentPoint = points.pop();
+            getNeighbours(currentPoint).stream().filter(p -> ShapeUtility.isWithInBounds(p.X, p.Y, drawingBoard.getLength(), drawingBoard.getHeight())).
+                    filter(p -> drawingBoard.getDrawingPoint(p.X, p.Y) == null || !drawingBoard.getDrawingPoint(p.X, p.Y).isPresent()).forEach(bp -> {
+                        if(!points.contains(bp)){
+                            points.push(bp);
+                        }
+                        drawingBoard.setPoint(new DrawingPoint(bp.X, bp.Y, '@'));
             });
         }
     }
 
-    private Stack<Point> getNeighbours(Point point) {
-        Stack<Point> neighbours = new Stack<>();
-        neighbours.push(new Point(point.x + 1, point.y));
-        neighbours.push(new Point(point.x - 1, point.y));
-        neighbours.push(new Point(point.x, point.y + 1));
-        neighbours.push(new Point(point.x, point.y - 1 ));
+    private Stack<DrawingPoint> getNeighbours(DrawingPoint point) {
+        Stack<DrawingPoint> neighbours = new Stack<>();
+        neighbours.push(new DrawingPoint(point.X + 1, point.Y));
+        neighbours.push(new DrawingPoint(point.X - 1, point.Y));
+        neighbours.push(new DrawingPoint(point.X, point.Y + 1));
+        neighbours.push(new DrawingPoint(point.X, point.Y - 1 ));
         return neighbours;
     }
 }

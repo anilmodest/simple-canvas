@@ -15,7 +15,7 @@ public class DrawingBoard {
     }
 
     public void setPoint(DrawingPoint dp) {
-        this.drawingArea[dp.getPoint().y][dp.getPoint().x] = Optional.ofNullable(dp);
+        this.drawingArea[dp.Y][dp.X] = Optional.ofNullable(dp);
     }
 
     public Optional<DrawingPoint> getDrawingPoint(int x, int y){

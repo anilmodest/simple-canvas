@@ -1,20 +1,23 @@
 package Canvas;
 
-import java.awt.*;
 
 public class DrawingPoint {
 
-    private Point point;
-    private Character drawingChar;
+    private char drawingChar;
 
-    public Point getPoint() {
-        return this.point;
+    public DrawingPoint(int x, int y) {
+        this(x, y , ' ');
     }
 
-    public DrawingPoint(Integer x, Integer y, char drawingChar) {
-        this.point = new Point(x, y);
+    public DrawingPoint(int x, int y, char drawingChar) {
+        this.X = x;
+        this.Y = y;
         this.drawingChar = drawingChar;
     }
+
+    public int X;
+
+    public int Y;
 
 
     public Character getDrawingChar() {
@@ -26,13 +29,13 @@ public class DrawingPoint {
         if(other instanceof DrawingPoint)
         {
             DrawingPoint otherDP = (DrawingPoint) other;
-            return this.point.x == otherDP.getPoint().x && this.point.y == otherDP.getPoint().y && this.drawingChar ==otherDP.drawingChar;
+            return this.X == otherDP.X && this.Y == otherDP.Y && this.drawingChar ==otherDP.drawingChar;
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return this.point.hashCode()*this.drawingChar.hashCode();
+        return (this.X * 976) * this.Y * new Character(this.drawingChar).hashCode();
     }
 }

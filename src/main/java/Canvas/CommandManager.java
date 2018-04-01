@@ -13,13 +13,13 @@ public class CommandManager {
     private ICommand command;
     private DrawingBoard drawingBoard;
     private IRenderer renderer;
-    private Queue<ICommand> commandToExecute;
+    private Stack<ICommand> commandToExecute;
     private Stack<ICommand> undoCommands;
 
     public CommandManager(IRenderer renderer){
 
         this.renderer = renderer;
-        this.commandToExecute = new LinkedList<>();
+        this.commandToExecute = new Stack<>();
         this.undoCommands = new Stack<>();
     }
 
@@ -36,7 +36,7 @@ public class CommandManager {
 
         if(canvasCommand != null) {
             this.drawingBoard = new DrawingBoard(canvasCommand.getLength(), canvasCommand.getHeight());
-            this.commandToExecute = new LinkedList<>();
+            this.commandToExecute = new Stack<>();
             this.undoCommands = new Stack<>();
         }
 
@@ -44,10 +44,11 @@ public class CommandManager {
             if(this.commandToExecute.isEmpty()) {
                 throw new UndoException("nothing to undo");
             }
-            this.undoCommands.push(this.commandToExecute.element());
+            this.command = this.commandToExecute.pop();
+            this.undoCommands.push(this.command);
         }
         else if(redoCommand != null) {
-            if(!this.commandToExecute.isEmpty()) {
+            if(!this.undoCommands.isEmpty()) {
                 this.commandToExecute.add(this.undoCommands.pop());
             }
         }
@@ -59,8 +60,8 @@ public class CommandManager {
             throw new Exception("First draw canvas");
         }
 
-            command.getShape().Draw(this.drawingBoard);
-            this.renderer.render(this.drawingBoard.toString());
+        command.getShape().Draw(this.drawingBoard);
+        this.renderer.render(this.drawingBoard.toString());
 
     }
 
