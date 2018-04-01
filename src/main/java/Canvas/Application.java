@@ -42,11 +42,8 @@ public class Application {
                     } else {
 
                         try {
-                            cmdManager.setCommand(cmd);
-                            cmdManager.execute();
+                            cmdManager.execute(cmd);
                         } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        } catch (UndoException e) {
                             System.out.println(e.getMessage());
                         }
                     }
