@@ -24,10 +24,10 @@ public class RectangleTests {
       when(mockDrawingBoard.getLength()).thenReturn(4);
       when(mockDrawingBoard.getHeight()).thenReturn(4);
       Rectangle rectangle = new Rectangle(1, 1, 4, 4);
-      List<DrawingPoint> expected = IntStream.range(1, 5).mapToObj(x -> new DrawingPoint(x, 1, '*')).collect(Collectors.toList());
-      expected.addAll(IntStream.range(1, 5).mapToObj(y -> new DrawingPoint(4, y, '*')).collect(Collectors.toList()));
-      expected.addAll(IntStream.range(1, 5).mapToObj(x -> new DrawingPoint(x, 4, '*')).collect(Collectors.toList()));
-      expected.addAll(IntStream.range(1, 5).mapToObj(y -> new DrawingPoint(1, y, '*')).collect(Collectors.toList()));
+      List<DrawingPoint> expected = IntStream.range(1, 5).mapToObj(x -> new DrawingPoint(x, 1, 'x')).collect(Collectors.toList());
+      expected.addAll(IntStream.range(1, 5).mapToObj(y -> new DrawingPoint(4, y, 'x')).collect(Collectors.toList()));
+      expected.addAll(IntStream.range(1, 5).mapToObj(x -> new DrawingPoint(x, 4, 'x')).collect(Collectors.toList()));
+      expected.addAll(IntStream.range(1, 5).mapToObj(y -> new DrawingPoint(1, y, 'x')).collect(Collectors.toList()));
         ArgumentCaptor<DrawingPoint> argsCaptor = ArgumentCaptor.forClass(DrawingPoint.class);
       rectangle.Draw(mockDrawingBoard);
       verify(mockDrawingBoard, times(expected.size())).setPoint(argsCaptor.capture());

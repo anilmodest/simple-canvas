@@ -13,13 +13,12 @@ import java.util.Stack;
 public class BucketFill implements IShape {
     private int x;
     private int y;
-    private final static char FILL_CHAR = '@';
+    private char drawingChar;
 
-    public BucketFill(int x, int y) {
-
-
+    public BucketFill(int x, int y, char drawingChar) {
         this.x = x;
         this.y = y;
+        this.drawingChar = drawingChar;
     }
 
     @Override
@@ -29,8 +28,11 @@ public class BucketFill implements IShape {
             throw new Exception(ExceptionMessages.OUT_OF_BOUND);
         }
         Optional<DrawingPoint> existingPoint = drawingBoard.getDrawingPoint(this.x, this.y);
-        if(existingPoint != null && existingPoint.isPresent()) {
-            return;
+        if(existingPoint != null) {
+            DrawingPoint point = existingPoint.isPresent() ? existingPoint.get() : null;
+            if(!point.getIsBucketFillChar()) {
+                return;
+            }
         }
 
         Stack<DrawingPoint> points = new Stack<>();
@@ -38,13 +40,24 @@ public class BucketFill implements IShape {
         while(!points.empty()) {
             DrawingPoint currentPoint = points.pop();
             getNeighbours(currentPoint).stream().filter(p -> ShapeUtility.isWithInBounds(p.X, p.Y, drawingBoard.getLength(), drawingBoard.getHeight())).
-                    filter(p -> drawingBoard.getDrawingPoint(p.X, p.Y) == null || !drawingBoard.getDrawingPoint(p.X, p.Y).isPresent()).forEach(bp -> {
+                    filter(p -> this.isPointEligibleForFill(drawingBoard.getDrawingPoint(p.X, p.Y))).forEach(bp -> {
                         if(!points.contains(bp)){
                             points.push(bp);
                         }
-                        drawingBoard.setPoint(new DrawingPoint(bp.X, bp.Y, FILL_CHAR));
+                        drawingBoard.setPoint(new DrawingPoint(bp.X, bp.Y, this.drawingChar, true));
             });
         }
+    }
+
+    private boolean isPointEligibleForFill(Optional<DrawingPoint> drawingPoint) {
+        boolean isEligible = true;
+        if(drawingPoint != null) {
+            if (drawingPoint.isPresent()) {
+                DrawingPoint dp = drawingPoint.get();
+                isEligible = dp.getIsBucketFillChar() && dp.getDrawingChar() != this.drawingChar;
+            }
+        }
+        return isEligible;
     }
 
     private Stack<DrawingPoint> getNeighbours(DrawingPoint point) {

@@ -11,7 +11,7 @@ public class Rectangle implements IShape {
     private Integer y1;
     private Integer x2;
     private Integer y2;
-    private final static char RECT_CHAR = '*';
+    private final static char RECT_CHAR = 'x';
 
     public Rectangle(Integer x1, Integer y1, Integer x2, Integer y2) {
         this.x1 = x1;

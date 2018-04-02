@@ -11,7 +11,7 @@ public class Line implements IShape {
     private Integer y1;
     private Integer x2;
     private Integer y2;
-    private final static char LINE_CHAR = '*';
+    private final static char LINE_CHAR = 'x';
 
     public Line(Integer x1, Integer y1, Integer
             x2, Integer y2) {

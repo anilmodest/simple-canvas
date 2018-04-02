@@ -30,7 +30,6 @@ public class CanvasTests {
         canvas.Draw(mockDrawingBoard);
 
         verify(mockDrawingBoard, times(expected.size())).setPoint(argsCaptor.capture());
-        List<DrawingPoint> notMatching = expected.stream().filter(x -> !argsCaptor.getAllValues().contains(x)).collect(Collectors.toList());
         Assert.assertTrue(expected.stream().allMatch(x -> argsCaptor.getAllValues().contains(x)));
     }
 }

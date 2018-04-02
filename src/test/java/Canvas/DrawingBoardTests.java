@@ -26,7 +26,12 @@ public class DrawingBoardTests {
         drawingBoard.setPoint(new DrawingPoint(2, 0, '-'));
         drawingBoard.setPoint(new DrawingPoint(3, 0, '-'));
 
-        Assert.assertEquals("----  \n      \n      \n      \n      \n      ", drawingBoard.toString());
+        Assert.assertEquals("----  \n" +
+                                     "      \n" +
+                                     "      \n" +
+                                     "      \n" +
+                                     "      \n" +
+                                     "      ", drawingBoard.toString());
     }
 
     @Test
@@ -34,12 +39,17 @@ public class DrawingBoardTests {
         Canvas canvas = new Canvas(4, 4);
         DrawingBoard drawingBoard = new DrawingBoard(4, 4);
         Line firstLine = new Line(1, 2, 4, 2);
-        Line secondLine = new Line(1, 3, 4, 3);
+        Line secondLine = new Line(1, 2, 1, 4);
 
         canvas.Draw(drawingBoard);
         firstLine.Draw(drawingBoard);
         secondLine.Draw(drawingBoard);
-        Assert.assertEquals("------\n|    |\n|----|\n|----|\n|    |\n------", drawingBoard.toString());
+        Assert.assertEquals("------\n" +
+                                     "|    |\n" +
+                                     "|xxxx|\n" +
+                                     "|x   |\n" +
+                                     "|x   |\n" +
+                                     "------", drawingBoard.toString());
 
     }
 
@@ -52,7 +62,12 @@ public class DrawingBoardTests {
         canvas.Draw(drawingBoard);
         rectangle.Draw(drawingBoard);
 
-        Assert.assertEquals("------\n|****|\n|*  *|\n|*  *|\n|****|\n------", drawingBoard.toString());
+        Assert.assertEquals("------\n" +
+                                     "|xxxx|\n" +
+                                     "|x  x|\n" +
+                                     "|x  x|\n" +
+                                     "|xxxx|\n" +
+                                     "------", drawingBoard.toString());
 
     }
 }

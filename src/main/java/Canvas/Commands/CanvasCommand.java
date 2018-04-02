@@ -4,12 +4,8 @@ import Canvas.Shapes.Canvas;
 import Canvas.Shapes.IShape;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static java.lang.System.in;
 
 public class CanvasCommand implements ICommand {
-    private Pattern _canvasRegPattern= Pattern.compile("^[C|c]\\s(?<Length>\\d+)\\s(?<Height>\\d+)$");
     private Integer length;
     private Integer height;
     private IShape canvas;
@@ -27,7 +23,7 @@ public class CanvasCommand implements ICommand {
     }
 
     public Boolean isValid(String cmd) {
-        Matcher m = _canvasRegPattern.matcher(cmd);
+        Matcher m = SupportedCommands.CANVAS_COMMAND.matcher(cmd);
         if(m.matches()){
             this.length = Integer.parseInt(m.group("Length"));
             this.height = Integer.parseInt(m.group("Height"));

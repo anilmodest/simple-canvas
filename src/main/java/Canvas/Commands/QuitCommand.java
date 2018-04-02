@@ -4,15 +4,13 @@ import Canvas.Shapes.IShape;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class QuitCommand implements ICommand {
 
-    private Pattern quitCommand= Pattern.compile("^[q|Q]");
 
     @Override
     public Boolean isValid(String cmd) {
-        Matcher m = this.quitCommand.matcher(cmd);
+        Matcher m = SupportedCommands.QUIT_COMMAND.matcher(cmd);
         return m.matches();
     }
 
