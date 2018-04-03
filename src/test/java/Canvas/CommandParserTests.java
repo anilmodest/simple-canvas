@@ -1,8 +1,8 @@
 package Canvas;
 
-import Canvas.Commands.CanvasCommand;
-import Canvas.Commands.ICommand;
-import Canvas.Commands.LineCommand;
+import Canvas.Commands.CanvasCommandWrapper;
+import Canvas.Commands.CommandWrapper;
+import Canvas.Commands.LineCommandWrapper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,22 +14,22 @@ public class CommandParserTests {
     public void parse_canvas_command(){
 
         CommandParser cmdParser = new CommandParser();
-        Optional<ICommand> cmd = cmdParser.parseCommand("C 2 2");
-        Assert.assertTrue(cmd.get() instanceof CanvasCommand);
+        Optional<CommandWrapper> cmd = cmdParser.parseCommand("C 2 2");
+        Assert.assertTrue(cmd.get() instanceof CanvasCommandWrapper);
     }
 
     @Test
     public void parse_invalid_command(){
 
         CommandParser cmdParser = new CommandParser();
-        Optional<ICommand> cmd = cmdParser.parseCommand("D 2 2");
+        Optional<CommandWrapper> cmd = cmdParser.parseCommand("D 2 2");
         Assert.assertFalse(cmd.isPresent());
     }
 
     @Test
     public void parse_line_command(){
         CommandParser cmdParser = new CommandParser();
-        Optional<ICommand> cmd = cmdParser.parseCommand("L 1 1 1 2");
-        Assert.assertTrue(cmd.get() instanceof LineCommand);
+        Optional<CommandWrapper> cmd = cmdParser.parseCommand("L 1 1 1 2");
+        Assert.assertTrue(cmd.get() instanceof LineCommandWrapper);
     }
 }

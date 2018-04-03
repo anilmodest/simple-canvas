@@ -1,11 +1,11 @@
 package Canvas.Commands;
 
-import Canvas.Shapes.BucketFill;
-import Canvas.Shapes.IShape;
+import Canvas.Shapes.BucketFillShape;
+import Canvas.Shapes.Shape;
 
 import java.util.regex.Matcher;
 
-public class BucketFillCommand implements ICommand {
+public class BucketFillCommandWrapper implements CommandWrapper {
     private Integer X1;
     private Integer Y1;
     private char drawingChar;
@@ -24,7 +24,7 @@ public class BucketFillCommand implements ICommand {
     }
 
     @Override
-    public IShape getShape() {
-        return new BucketFill(this.X1, this.Y1, this.drawingChar);
+    public Shape getShape() {
+        return new BucketFillShape(this.X1, this.Y1, this.drawingChar);
     }
 }

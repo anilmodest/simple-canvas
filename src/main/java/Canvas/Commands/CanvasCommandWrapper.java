@@ -1,14 +1,14 @@
 package Canvas.Commands;
 
-import Canvas.Shapes.Canvas;
-import Canvas.Shapes.IShape;
+import Canvas.Shapes.CanvasShape;
+import Canvas.Shapes.Shape;
 
 import java.util.regex.Matcher;
 
-public class CanvasCommand implements ICommand {
+public class CanvasCommandWrapper implements CommandWrapper {
     private Integer length;
     private Integer height;
-    private IShape canvas;
+    private Shape canvas;
 
     public Integer getLength(){
         return this.length;
@@ -18,8 +18,8 @@ public class CanvasCommand implements ICommand {
         return height;
     }
 
-    public IShape getShape(){
-        return this.canvas = new Canvas(this.length, this.height);
+    public Shape getShape(){
+        return this.canvas = new CanvasShape(this.length, this.height);
     }
 
     public Boolean isValid(String cmd) {

@@ -2,10 +2,9 @@ package EndtoEndTest;
 
 import Canvas.CommandManager;
 import Canvas.CommandParser;
-import Canvas.Commands.ICommand;
-import Canvas.Renderer.IConsole;
-import Canvas.Renderer.Renderer;
-import Canvas.Shapes.IShape;
+import Canvas.Commands.CommandWrapper;
+import Canvas.Renderer.Console;
+import Canvas.Renderer.TextRenderer;
 import com.greghaskins.spectrum.Spectrum;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
@@ -20,20 +19,20 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(Spectrum.class)
-public class CanvasSpecs {
+public class CanvasShapeSpecs {
     {
 
         describe("Validate Problem spec", () -> {
 
-            IConsole mockConsole = mock(IConsole.class);
+            Console mockConsole = mock(Console.class);
             CommandParser commandParser = new CommandParser();
-            CommandManager commandManager = new CommandManager(new Renderer(mockConsole));
+            CommandManager commandManager = new CommandManager(new TextRenderer(mockConsole));
 
             it("Draw canvas 20x4", () -> {
 
 
-                Optional<ICommand> optionalICommand = commandParser.parseCommand("C 20 4");
-                ICommand command = optionalICommand.get();
+                Optional<CommandWrapper> optionalICommand = commandParser.parseCommand("C 20 4");
+                CommandWrapper command = optionalICommand.get();
 
                 ArgumentCaptor<String> argsCaptor = ArgumentCaptor.forClass(String.class);
                 commandManager.execute(command);
@@ -46,11 +45,11 @@ public class CanvasSpecs {
                                              "----------------------", argsCaptor.getValue());
             });
 
-            it("Draw Horizontal Line", () -> {
+            it("Draw Horizontal LineShape", () -> {
 
 
-                Optional<ICommand> optionalICommand = commandParser.parseCommand("L 1 2 6 2");
-                ICommand command = optionalICommand.get();
+                Optional<CommandWrapper> optionalICommand = commandParser.parseCommand("L 1 2 6 2");
+                CommandWrapper command = optionalICommand.get();
 
                 ArgumentCaptor<String> argsCaptor = ArgumentCaptor.forClass(String.class);
                 commandManager.execute(command);
@@ -63,11 +62,11 @@ public class CanvasSpecs {
                                              "----------------------", argsCaptor.getValue());
             });
 
-            it("Draw Vertical Line", () -> {
+            it("Draw Vertical LineShape", () -> {
 
 
-                Optional<ICommand> optionalICommand = commandParser.parseCommand("L 6 3 6 4");
-                ICommand command = optionalICommand.get();
+                Optional<CommandWrapper> optionalICommand = commandParser.parseCommand("L 6 3 6 4");
+                CommandWrapper command = optionalICommand.get();
 
                 ArgumentCaptor<String> argsCaptor = ArgumentCaptor.forClass(String.class);
                 commandManager.execute(command);
@@ -80,11 +79,11 @@ public class CanvasSpecs {
                                              "----------------------", argsCaptor.getValue());
             });
 
-            it("Draw Rectangle", () -> {
+            it("Draw RectangleShape", () -> {
 
 
-                Optional<ICommand> optionalICommand = commandParser.parseCommand("R 14 1 18 3");
-                ICommand command = optionalICommand.get();
+                Optional<CommandWrapper> optionalICommand = commandParser.parseCommand("R 14 1 18 3");
+                CommandWrapper command = optionalICommand.get();
 
                 ArgumentCaptor<String> argsCaptor = ArgumentCaptor.forClass(String.class);
                 commandManager.execute(command);
@@ -100,8 +99,8 @@ public class CanvasSpecs {
             it("Execute Bucket Fill", () -> {
 
 
-                Optional<ICommand> optionalICommand = commandParser.parseCommand("B 10 3 o");
-                ICommand command = optionalICommand.get();
+                Optional<CommandWrapper> optionalICommand = commandParser.parseCommand("B 10 3 o");
+                CommandWrapper command = optionalICommand.get();
 
                 ArgumentCaptor<String> argsCaptor = ArgumentCaptor.forClass(String.class);
                 commandManager.execute(command);

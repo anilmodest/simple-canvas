@@ -39,7 +39,7 @@ public class DrawingPoint {
         if(other instanceof DrawingPoint)
         {
             DrawingPoint otherDP = (DrawingPoint) other;
-            return this.X == otherDP.X && this.Y == otherDP.Y && this.drawingChar == otherDP.drawingChar && this.isBucketFill == otherDP.isBucketFill;
+             return this.X == otherDP.X && this.Y == otherDP.Y && this.drawingChar == otherDP.drawingChar && this.isBucketFill == otherDP.isBucketFill;
         }
         return false;
     }

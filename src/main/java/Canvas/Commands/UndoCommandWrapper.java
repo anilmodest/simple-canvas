@@ -1,19 +1,19 @@
 package Canvas.Commands;
 
-import Canvas.Shapes.IShape;
+import Canvas.Shapes.Shape;
 
 import java.util.regex.Matcher;
 
-public class RedoCommand implements ICommand {
+public class UndoCommandWrapper implements CommandWrapper {
 
     @Override
     public Boolean isValid(String cmd) {
-        Matcher m = SupportedCommands.REDO_COMMAND.matcher(cmd);
+        Matcher m = SupportedCommands.UNDO_COMMAND.matcher(cmd);
         return m.matches();
     }
 
     @Override
-    public IShape getShape() {
+    public Shape getShape() {
         return null;
     }
 }

@@ -1,11 +1,13 @@
 package Canvas;
 
-import Canvas.Commands.CanvasCommand;
-import Canvas.Commands.ICommand;
-import Canvas.Renderer.IConsole;
-import Canvas.Renderer.Renderer;
+import Canvas.Commands.CanvasCommandWrapper;
+import Canvas.Commands.CommandWrapper;
+import Canvas.Exceptions.ExceptionMessages;
+import Canvas.Renderer.Console;
+import Canvas.Renderer.TextRenderer;
 import Canvas.Renderer.SystemConsole;
-import Canvas.Shapes.IShape;
+import Canvas.Shapes.Shape;
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -15,10 +17,10 @@ import static org.mockito.Mockito.*;
 public class CommandManagerTest {
     @Test
     public void execute_command() throws Exception {
-       CanvasCommand mockCommand = mock(CanvasCommand.class);
-       IShape mockShape = mock(IShape.class);
-       IConsole mockConsole = mock(IConsole.class);
-       CommandManager cmdMgr = new CommandManager(new Renderer(mockConsole));
+       CanvasCommandWrapper mockCommand = mock(CanvasCommandWrapper.class);
+       Shape mockShape = mock(Shape.class);
+       Console mockConsole = mock(Console.class);
+       CommandManager cmdMgr = new CommandManager(new TextRenderer(mockConsole));
        when(mockCommand.getShape()).thenReturn(mockShape);
        when(mockCommand.getLength()).thenReturn(2);
        when(mockCommand.getHeight()).thenReturn(2);
@@ -26,14 +28,14 @@ public class CommandManagerTest {
        verify(mockShape, times(1)).Draw(Mockito.any());
     }
 
-    @Test(expected = Exception.class)
-    public void should_throw_exception_shape_drawn_before_canvas() throws Exception {
+    @Test
+    public void should_give_error_message_shape_drawn_before_canvas() throws Exception {
 
-        ICommand mockCommand = mock(ICommand.class);
-        IShape mockShape = mock(IShape.class);
-        CommandManager cmdMgr = new CommandManager(new Renderer(new SystemConsole()));
+        CommandWrapper mockCommand = mock(CommandWrapper.class);
+        Shape mockShape = mock(Shape.class);
+        CommandManager cmdMgr = new CommandManager(new TextRenderer(new SystemConsole()));
         when(mockCommand.getShape()).thenReturn(mockShape);
-        cmdMgr.execute(mockCommand);
-        verify(mockShape, times(1)).Draw(Mockito.any());
+        String errorMessage = cmdMgr.execute(mockCommand);
+        Assert.assertEquals(ExceptionMessages.CANVAS_NOT_DRAWN, errorMessage);
     }
 }

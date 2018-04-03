@@ -1,17 +1,10 @@
 package Canvas;
 
-import Canvas.Renderer.IConsole;
-import Canvas.Renderer.IRenderer;
-import Canvas.Renderer.Renderer;
-import Canvas.Renderer.SystemConsole;
-import Canvas.Shapes.Canvas;
-import Canvas.Shapes.Line;
-import Canvas.Shapes.Rectangle;
+import Canvas.Shapes.CanvasShape;
+import Canvas.Shapes.LineShape;
+import Canvas.Shapes.RectangleShape;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
-import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -36,14 +29,14 @@ public class DrawingBoardTests {
 
     @Test
     public void should_render_canvas_and_line() throws Exception {
-        Canvas canvas = new Canvas(4, 4);
+        CanvasShape canvasShape = new CanvasShape(4, 4);
         DrawingBoard drawingBoard = new DrawingBoard(4, 4);
-        Line firstLine = new Line(1, 2, 4, 2);
-        Line secondLine = new Line(1, 2, 1, 4);
+        LineShape firstLineShape = new LineShape(1, 2, 4, 2);
+        LineShape secondLineShape = new LineShape(1, 2, 1, 4);
 
-        canvas.Draw(drawingBoard);
-        firstLine.Draw(drawingBoard);
-        secondLine.Draw(drawingBoard);
+        canvasShape.Draw(drawingBoard);
+        firstLineShape.Draw(drawingBoard);
+        secondLineShape.Draw(drawingBoard);
         Assert.assertEquals("------\n" +
                                      "|    |\n" +
                                      "|xxxx|\n" +
@@ -56,11 +49,11 @@ public class DrawingBoardTests {
     @Test
     public void should_render_canvas_and_rectangle() throws Exception {
         DrawingBoard drawingBoard = new DrawingBoard(4, 4);
-        Canvas canvas = new Canvas(4, 4);
-        Rectangle rectangle = new Rectangle(1, 1, 4, 4);
+        CanvasShape canvasShape = new CanvasShape(4, 4);
+        RectangleShape rectangleShape = new RectangleShape(1, 1, 4, 4);
 
-        canvas.Draw(drawingBoard);
-        rectangle.Draw(drawingBoard);
+        canvasShape.Draw(drawingBoard);
+        rectangleShape.Draw(drawingBoard);
 
         Assert.assertEquals("------\n" +
                                      "|xxxx|\n" +

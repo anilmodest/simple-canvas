@@ -8,21 +8,21 @@ import java.util.Optional;
 
 public class CommandParser {
 
-    private List<ICommand> supportedCommands;
+    private List<CommandWrapper> supportedCommands;
 
     public CommandParser(){
 
     }
-    public Optional<ICommand> parseCommand(String cmdText) {
+    public Optional<CommandWrapper> parseCommand(String cmdText) {
         this.supportedCommands = new ArrayList<>();
-        this.supportedCommands.add(new CanvasCommand());
-        this.supportedCommands.add(new LineCommand());
-        this.supportedCommands.add(new RectangleCommand());
-        this.supportedCommands.add(new BucketFillCommand());
-        this.supportedCommands.add(new QuitCommand());
-        this.supportedCommands.add(new HelpCommand());
-        this.supportedCommands.add(new RedoCommand());
-        this.supportedCommands.add(new UndoCommand());
+        this.supportedCommands.add(new CanvasCommandWrapper());
+        this.supportedCommands.add(new LineCommandWrapper());
+        this.supportedCommands.add(new RectangleCommandWrapper());
+        this.supportedCommands.add(new BucketFillCommandWrapper());
+        this.supportedCommands.add(new QuitCommandWrapper());
+        this.supportedCommands.add(new HelpCommandWrapper());
+        this.supportedCommands.add(new RedoCommandWrapper());
+        this.supportedCommands.add(new UndoCommandWrapper());
 
         return this.supportedCommands.stream().filter(cmd -> cmd.isValid(cmdText)).findFirst();
     }

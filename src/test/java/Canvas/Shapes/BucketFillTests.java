@@ -2,18 +2,13 @@ package Canvas.Shapes;
 
 
 import Canvas.DrawingBoard;
-import Canvas.DrawingPoint;
 
+import Canvas.Exceptions.ExceptionMessages;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class BucketFillTests {
 
@@ -21,11 +16,12 @@ public class BucketFillTests {
     @Test
     public void bucket_fill() throws Exception {
         DrawingBoard drawingBoard = new DrawingBoard(2, 2);
-        BucketFill bucketFill = new BucketFill(1, 1, '@');
-        Canvas canvas = new Canvas(2, 2);
-        canvas.Draw(drawingBoard);
-        bucketFill.Draw(drawingBoard);
+        BucketFillShape bucketFillShape = new BucketFillShape(1, 1, '@');
+        CanvasShape canvasShape = new CanvasShape(2, 2);
+        String errorMessage  = canvasShape.Draw(drawingBoard);
+        errorMessage = bucketFillShape.Draw(drawingBoard);
 
+        Assert.assertEquals("", errorMessage);
         Assert.assertEquals("----\n" +
                                      "|@@|\n" +
                                      "|@@|\n" +
@@ -36,32 +32,39 @@ public class BucketFillTests {
     @Test
     public void should_refill_bucket_fill_if_drawn_at_same_point_with_new_char() throws Exception {
         DrawingBoard drawingBoard = new DrawingBoard(2, 2);
-        BucketFill bucketFill = new BucketFill(1, 1, '@');
-        Canvas canvas = new Canvas(2, 2);
-        canvas.Draw(drawingBoard);
-        bucketFill.Draw(drawingBoard);
+        BucketFillShape bucketFillShape = new BucketFillShape(1, 1, '@');
+        CanvasShape canvasShape = new CanvasShape(2, 2);
+        String errorMessage  = canvasShape.Draw(drawingBoard);
+        errorMessage  = bucketFillShape.Draw(drawingBoard);
 
         Assert.assertEquals("----\n" +
                                      "|@@|\n" +
                                      "|@@|\n" +
                                      "----", drawingBoard.toString());
 
-        bucketFill = new BucketFill(1, 1, '$');
-        bucketFill.Draw(drawingBoard);
+        bucketFillShape = new BucketFillShape(1, 1, '$');
+        errorMessage  = bucketFillShape.Draw(drawingBoard);
+
+        Assert.assertEquals("", errorMessage);
+        Assert.assertEquals("----\n" +
+                                     "|$$|\n" +
+                                     "|$$|\n" +
+                                     "----", drawingBoard.toString());
 
     }
 
     @Test
     public void should_not_fill_area_under_rectangle_if_fillinvoked_for_point_outside() throws Exception {
         DrawingBoard drawingBoard = new DrawingBoard(4, 4);
-        BucketFill bucketFill = new BucketFill(1, 1, '@');
-        Canvas canvas = new Canvas(4, 4);
-        Rectangle rectangle = new Rectangle(1, 2, 4, 4);
+        BucketFillShape bucketFillShape = new BucketFillShape(1, 1, '@');
+        CanvasShape canvasShape = new CanvasShape(4, 4);
+        RectangleShape rectangleShape = new RectangleShape(1, 2, 4, 4);
 
-        canvas.Draw(drawingBoard);
-        rectangle.Draw(drawingBoard);
-        bucketFill.Draw(drawingBoard);
+        String errorMessage  = canvasShape.Draw(drawingBoard);
+        errorMessage  = rectangleShape.Draw(drawingBoard);
+        errorMessage  = bucketFillShape.Draw(drawingBoard);
 
+        Assert.assertEquals("", errorMessage);
         Assert.assertEquals("------\n" +
                                      "|@@@@|\n" +
                                      "|xxxx|\n" +
@@ -69,26 +72,29 @@ public class BucketFillTests {
                                      "|xxxx|\n" +
                                      "------", drawingBoard.toString());
 
+
     }
 
-    @Test(expected = Exception.class)
-    public void should_throw_exception_if_point_out_of_bounds() throws Exception {
+    @Test
+    public void should_give_out_of_bound_if_point_out_of_bounds() throws Exception {
         DrawingBoard drawingBoard = new DrawingBoard(4, 4);
-        BucketFill bucketFill = new BucketFill(10, 10, '@');
-        bucketFill.Draw(drawingBoard);
+        BucketFillShape bucketFillShape = new BucketFillShape(10, 10, '@');
+        String errorMessage  = bucketFillShape.Draw(drawingBoard);
+        Assert.assertEquals(ExceptionMessages.OUT_OF_BOUND, errorMessage);
     }
 
     @Test
     public void should_not_fill_if_point_already_filled() throws Exception {
         DrawingBoard drawingBoard = new DrawingBoard(2, 2);
-        Canvas canvas = new Canvas(2, 2);
-        Line line= new Line(1, 1, 2, 1);
-        BucketFill bucketFill = new BucketFill(1, 1, '@');
+        CanvasShape canvasShape = new CanvasShape(2, 2);
+        LineShape lineShape = new LineShape(1, 1, 2, 1);
+        BucketFillShape bucketFillShape = new BucketFillShape(1, 1, '@');
 
-        canvas.Draw(drawingBoard);
-        line.Draw(drawingBoard);
-        bucketFill.Draw(drawingBoard);
+        String errorMessage  =canvasShape.Draw(drawingBoard);
+        errorMessage = lineShape.Draw(drawingBoard);
+        errorMessage = bucketFillShape.Draw(drawingBoard);
 
+        Assert.assertEquals("", errorMessage);
         Assert.assertEquals("----\n" +
                                      "|xx|\n" +
                                      "|  |\n" +

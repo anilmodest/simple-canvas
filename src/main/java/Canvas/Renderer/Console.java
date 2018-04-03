@@ -1,6 +1,6 @@
 package Canvas.Renderer;
 
-public interface IConsole {
+public interface Console {
 
     void print(String output);
 }

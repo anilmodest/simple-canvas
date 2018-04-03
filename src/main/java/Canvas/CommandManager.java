@@ -1,23 +1,24 @@
 package Canvas;
 
-import Canvas.Commands.CanvasCommand;
-import Canvas.Commands.ICommand;
+import Canvas.Commands.CanvasCommandWrapper;
+import Canvas.Commands.CommandWrapper;
 import Canvas.Exceptions.ExceptionMessages;
-import Canvas.Renderer.IRenderer;
+import Canvas.Renderer.Renderer;
 
 public class CommandManager {
     private DrawingBoard drawingBoard;
-    private IRenderer renderer;
+    private Renderer renderer;
 
-    public CommandManager(IRenderer renderer){
+    public CommandManager(Renderer renderer){
         this.renderer = renderer;
     }
 
-    public void execute(ICommand command) throws Exception {
-        CanvasCommand canvasCommand = command instanceof CanvasCommand ? (CanvasCommand) command: null;
+    public String execute(CommandWrapper command) {
+        String errorMessage = "";
+        CanvasCommandWrapper canvasCommand = command instanceof CanvasCommandWrapper ? (CanvasCommandWrapper) command: null;
 
-        if(command instanceof CanvasCommand) {
-             canvasCommand = (CanvasCommand)command;
+        if(command instanceof CanvasCommandWrapper) {
+             canvasCommand = (CanvasCommandWrapper)command;
         }
 
 
@@ -27,12 +28,13 @@ public class CommandManager {
 
 
         if (this.drawingBoard == null) {
-            throw new Exception(ExceptionMessages.CANVAS_NOT_DRAWN);
+            errorMessage = ExceptionMessages.CANVAS_NOT_DRAWN;
         }
-
-        command.getShape().Draw(this.drawingBoard);
-        this.renderer.render(this.drawingBoard.toString());
-
+        else {
+            errorMessage = command.getShape().Draw(this.drawingBoard);
+            this.renderer.render(this.drawingBoard.toString());
+        }
+        return errorMessage;
     }
 
 }
